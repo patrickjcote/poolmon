@@ -18,7 +18,7 @@ volatile unsigned int uartRxBufNdx;
 volatile unsigned char uartRxBuf[RX_BUF_SIZE];
 
 void main(void) {
-    WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
     // Set System Clock
     DCOCTL = 0;                             // Select lowest DCOx and MODx settings
     BCSCTL1 = CALBC1_16MHZ;					// Set DCO
@@ -87,11 +87,16 @@ void main(void) {
         // Send Data
         delayMS(1);
         sendGET(1, pHadc);						// Transmit pH ADC Value
+        delayMS(1);
         sendGET(0, tempC);
         updateLCD(lcd, uartRxBufNdx, uartRxBuf);
 
-        // Delay two seconds
-        delayMS(2000);
+        // Scroll LCD
+        volatile int k;
+        for(k=0;k<(RX_BUF_SIZE-16);k++){
+            updateLCD(lcd, k, uartRxBuf);
+            delayMS(15);
+        }
 
 
 

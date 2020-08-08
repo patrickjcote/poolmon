@@ -4,7 +4,6 @@
 
 //unsigned const char CONST_SSID_STR[] = "AT+CWJAP=\"SSID\",\"PASSWORD\"\0";
 
-
 void initESP(){
 
     printlnUART("ATE1",4);

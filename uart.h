@@ -1,7 +1,7 @@
 #ifndef UART_H_
 #define UART_H_
 
-#define RX_BUF_SIZE 400
+#define RX_BUF_SIZE 128
 
 extern volatile unsigned int uartRxBufNdx;
 extern volatile unsigned char uartRxBuf[RX_BUF_SIZE];

@@ -1,5 +1,7 @@
 #include <msp430.h>
 #include <stdio.h>
+
+#include "DS18B20.h"
 #include "lcd.h"
 #include "uart.h"
 #include "esp8266.h"
@@ -67,13 +69,13 @@ void main(void) {
 	initESP(&esp);
     P1OUT &= ~BIT6;
 
-
-
     // Main Loop
     while(1){
 
+        short tempC;
 
         P1OUT |= BIT6;							// Green LED On
+        tempC = Read_Temperature();             // Read Temp;
         ADC10CTL0 |= ENC + ADC10SC;             // Sampling and conversion start
         __bis_SR_register(CPUOFF + GIE);        // LPM0, ADC10_ISR will force exit
         pHadc = ADC10MEM;						// Get ADC10MEM Value

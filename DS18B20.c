@@ -104,11 +104,11 @@ unsigned char read_byte(void)
 
 
 
-short Read_Temperature(void)
+unsigned int Read_Temperature(void)
 {
     char get[9];
     char temp_lsb,temp_msb;
-    short tempOut = 0;
+    unsigned int tempOut = 0;
     volatile int k, intC = 0;
     ow_reset();
     write_byte(0xCC); // Skip ROM
@@ -121,7 +121,7 @@ short Read_Temperature(void)
     temp_msb = get[1]; // Sign byte + lsbit
     temp_lsb = get[0]; // Temp data plus lsb
     intC = ((temp_msb<<4) & 0x70) + ((temp_lsb>>4) & 0x0F);
-
+    // Temp out Format: 2^[S S S S  S 6 5 4  3 2 1 0 -1 -2 -3 -4]
     tempOut = (temp_msb<<8) + temp_lsb;
 
        return tempOut;

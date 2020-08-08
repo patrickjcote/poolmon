@@ -72,18 +72,27 @@ void main(void) {
     // Main Loop
     while(1){
 
-        short tempC;
+        unsigned int tempC;
 
+        // Start measurements
         P1OUT |= BIT6;							// Green LED On
+        //
         tempC = Read_Temperature();             // Read Temp;
         ADC10CTL0 |= ENC + ADC10SC;             // Sampling and conversion start
         __bis_SR_register(CPUOFF + GIE);        // LPM0, ADC10_ISR will force exit
         pHadc = ADC10MEM;						// Get ADC10MEM Value
         P1OUT &= ~BIT6;							// Green Led Off
+        // End Measurements
+
+        // Send Data
         delayMS(1);
         sendGET(1, pHadc);						// Transmit pH ADC Value
-        delayMS(2000);
+        sendGET(0, tempC);
         updateLCD(lcd, uartRxBufNdx, uartRxBuf);
+
+        // Delay two seconds
+        delayMS(2000);
+
 
 
     }// forever while

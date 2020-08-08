@@ -14,6 +14,6 @@ void write_bit(char);
 void write_byte(char);
 unsigned char read_bit(void);
 unsigned char read_byte(void);
-short Read_Temperature(void);
+unsigned int Read_Temperature(void);
 
 #endif

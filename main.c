@@ -16,7 +16,7 @@ void main(void);
 // Globals
 volatile unsigned int uartRxBufNdx;
 volatile unsigned char uartRxBuf[RX_BUF_SIZE];
-
+volatile unsigned int loopCount = 0;
 void main(void) {
      WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
     // Set System Clock
@@ -40,11 +40,12 @@ void main(void) {
 
     // ---- LED ----
     P1DIR |= BIT0+BIT6;                     // P1.0 output
+    P1OUT |= BIT0;
 
     // ---- Timer A0 ----
-//    CCTL0 = CCIE;                           // CCR0 interrupt enabled
-//    CCR0 = TIMERA0_OFFSET;                  // Set Timer A0 Offset
-//    TACTL = TASSEL_2 + MC_2 + ID_3;         // SMCLK, contmode
+    CCTL0 = CCIE;                           // CCR0 interrupt enabled
+    CCR0 = TIMERA0_OFFSET;                  // Set Timer A0 Offset
+    TACTL = TASSEL_2 + MC_2 + ID_3;         // SMCLK, contmode
 
     __bis_SR_register(GIE);                 // Interrupts enabled
 
@@ -98,7 +99,9 @@ void main(void) {
             delayMS(15);
         }
 
+        loopCount++;
 
+        updateLCDbottom(lcd, loopCount);
 
     }// forever while
 }// main()
@@ -110,7 +113,8 @@ void main(void) {
 #pragma vector=TIMER0_A0_VECTOR
 __interrupt void Timer_A (void)
 {
-        //CCR0 += TIMERA0_OFFSET;                 // Add Offset to CCR0
+        P1OUT ^= BIT0;
+        CCR0 += TIMERA0_OFFSET;                 // Add Offset to CCR0
 }
 
 // ADC10 interrupt service routine

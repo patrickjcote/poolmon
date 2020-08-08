@@ -22,11 +22,15 @@ void printlnUART(unsigned char message[], int msgLen){
 
     volatile unsigned int i;
 
+
+    WDTCTL = WDTPW | WDTCNTCL;     // Start Watchdog
+
     // If msgLen given
     // for msgLen of message[] output that char to the Tx buffer
     if(msgLen>0){
         for(i = 0; i < msgLen; i++){
             while (!(IFG2&UCA0TXIFG));          // USCI_A0 TX buffer ready?
+            WDTCTL = WDTPW | WDTCNTCL;   // pet the dog
             UCA0TXBUF = message[i];
         }//for
     }
@@ -34,14 +38,19 @@ void printlnUART(unsigned char message[], int msgLen){
     else{
         for(i = 0; message[i]!='\0'; i++){
             while (!(IFG2&UCA0TXIFG));          // USCI_A0 TX buffer ready?
+            WDTCTL = WDTPW | WDTCNTCL;   // pet the dog
             UCA0TXBUF = message[i];
         }//for
     }
 
     while (!(IFG2&UCA0TXIFG));              // USCI_A0 TX buffer ready?
+    WDTCTL = WDTPW | WDTCNTCL;   // pet the dog
     UCA0TXBUF = 0x0D;                       // TX -> Carriage return /r(0D)
     while (!(IFG2&UCA0TXIFG));              // USCI_A0 TX buffer ready?
+    WDTCTL = WDTPW | WDTCNTCL;   // pet the dog
     UCA0TXBUF = 0x0A;                       // Tx -> Line Feed /n(0A)
+
+    WDTCTL = WDTPW | WDTHOLD;   // Stop watchdog timer
 
 }//outputMessage()
 

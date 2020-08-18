@@ -3,7 +3,7 @@
 
 #define US_MULTIPLIER 16 // 1microsecond = US_MULTIPLIER * SYS_FREQ
 
-#define DS_DQ_BIT  BIT5
+#define DS_DQ_BIT  BIT1
 #define DS_PxOUT   P2OUT
 #define DS_PxIN    P2IN
 #define DS_PxDIR   P2DIR

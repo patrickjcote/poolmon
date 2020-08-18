@@ -54,6 +54,12 @@ void printlnUART(unsigned char message[], int msgLen){
 
 }//outputMessage()
 
+void clearRXBuf(){
+    unsigned int k;
+    for(k=0;k<RX_BUF_SIZE;k++)
+        uartRxBuf[k] = '-';
+    uartRxBufNdx = 0;
+}
 
 // UART RX Interrupt
 #pragma vector=USCIAB0RX_VECTOR
@@ -68,5 +74,6 @@ __interrupt void USCI0RX_ISR(void)
         uartRxBufNdx = 0;
     }
 
+    P2OUT ^= BIT2;
     IFG2 = IFG2 & 0x0A;
 }

@@ -4,6 +4,7 @@
 
 //unsigned const char CONST_SSID_STR[] = "AT+CWJAP=\"SSID\",\"PASSWORD\"\0";
 
+
 void initESP(){
 
     printlnUART("ATE1",4);
@@ -13,7 +14,10 @@ void initESP(){
     printlnUART("AT+CWMODE=1",11);
     delayMS(200);
     printlnUART(CONST_SSID_STR,0);
-    delayMS(500);
+    delayMS(1000);
+    clearRXBuf();
+    printlnUART("AT_CIPSTATUS\0",0);
+    delayMS(10);
     printlnUART("AT+CIFSR",8);
     delayMS(20);
 }
@@ -62,7 +66,7 @@ void sendGET(int seq, unsigned int data){
 void delayMS(int ms){
 
     volatile int delayCount;
-    for( delayCount = 0; delayCount < ms*10; delayCount++){
+    for( delayCount = 0; delayCount < ms*100; delayCount++){
         __delay_cycles(MS_DELAY_COUNT);
     }
 

@@ -104,7 +104,7 @@ void redrawScreen(LCD *lcd){
 
 void updateLCD(LCD lcd, int bufferNdx, volatile unsigned char uartRxBuf[]){
 
-    // Top Row Update with Buffer Scroll
+    // Top Row Update
     volatile int j,ndx;
     for(j=0;j<16;j++){
         ndx = j + bufferNdx;
@@ -118,6 +118,25 @@ void updateLCD(LCD lcd, int bufferNdx, volatile unsigned char uartRxBuf[]){
     lcd.memory[1][0] = bufferNdx/100+0x30;
     lcd.memory[1][1] = (bufferNdx%100)/10+0x30;
     lcd.memory[1][2] = bufferNdx%10+0x30;
+
+    redrawScreen(&lcd);
+
+}
+
+void updateLCDbottom(LCD lcd, int data){
+
+
+    // Bottom Row
+    lcd.memory[0][0] = 'L';
+    lcd.memory[0][1] = 'o';
+    lcd.memory[0][2] = 'o';
+    lcd.memory[0][3] = 'p';
+    lcd.memory[0][4] = ':';
+
+
+    lcd.memory[1][0] = data/100+0x30;
+    lcd.memory[1][1] = (data%100)/10+0x30;
+    lcd.memory[1][2] = data%10+0x30;
 
     redrawScreen(&lcd);
 
